@@ -22,7 +22,8 @@ app.post("/infer-schema", async (req, res) => {
       "Design JSON:\n" + JSON.stringify(design);
 
     const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+";
 
     const resp = await fetch(url, {
       method: "POST",
