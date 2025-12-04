@@ -61,4 +61,20 @@ app.post("/infer-schema", async (req, res) => {
     });
 
     const data = await resp.json();
-    if (!resp.ok) return res.status(resp.status).
+    if (!resp.ok) return res.status(resp.status).json({ error: "Gemini error", raw: data });
+
+    const text = data && data.candidates && data.candidates[0] &&
+      data.candidates[0].content && data.candidates[0].content.parts &&
+      data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
+
+    if (!text) return res.status(500).json({ error: "No text in Gemini response", raw: data });
+
+    res.setHeader("Content-Type", "application/json");
+    res.send(text);
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log("Listening on", port));
