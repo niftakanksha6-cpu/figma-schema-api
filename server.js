@@ -3,6 +3,15 @@ import express from "express";
 const app = express();
 app.use(express.json({ limit: "2mb" }));
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-goog-api-key");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  if (req.method === "OPTIONS") return res.sendStatus(200);
+  next();
+});
+
+
 // CORS for browser/Figma UI calls
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
